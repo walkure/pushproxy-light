@@ -44,6 +44,7 @@ Send signature with pre-shared key for tamper detection and authentication.
 ## Push URL Path
 
 `/push/{{hostname}}`
+
 {{hostname}} is the same as the hostname in the Prometheus configuration.
 
 ## body
