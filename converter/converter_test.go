@@ -3,7 +3,6 @@ package converter
 import (
 	"strings"
 	"testing"
-	"time"
 )
 
 const testJson = `{"temperature":{"type":"gauge","help":"message",
@@ -62,44 +61,6 @@ func TestConvertLabelsQuoted(t *testing.T) {
 	result := convertLabels(testValue)
 	if result != testResult {
 		t.Errorf("Result[%s] does not match [%s]\n", result, testResult)
-	}
-
-}
-
-func TestExpireAtEpoch(t *testing.T) {
-
-	tm := time.Date(2021, 5, 11, 21, 50, 21, 0, time.Local)
-
-	decoded, err := decodeBody(`{"temperature":{"expireAt":"1620737421"}}`)
-	if err != nil {
-		t.Fatalf("Test Broken!! :%v", err)
-	}
-
-	it, ok := (*decoded)["temperature"]
-	if !ok {
-		t.Fatal("Test Broken!! :TestJson broken")
-	}
-	if tm != time.Time(it.ExpireAt) {
-		t.Errorf("Result[%s] does not match [%s]\n", tm, it.ExpireAt)
-	}
-
-}
-
-func TestExpireAtRFC3339(t *testing.T) {
-
-	tm := time.Date(2021, 5, 11, 21, 50, 35, 0, time.Local)
-
-	decoded, err := decodeBody(`{"temperature":{"expireAt":"2021-05-11T21:50:35+09:00"}}`)
-	if err != nil {
-		t.Fatalf("Test Broken!! :%v", err)
-	}
-
-	it, ok := (*decoded)["temperature"]
-	if !ok {
-		t.Fatal("Test Broken!! :TestJson broken")
-	}
-	if tm != time.Time(it.ExpireAt) {
-		t.Errorf("Result[%s] does not match [%s]\n", tm, it.ExpireAt)
 	}
 
 }

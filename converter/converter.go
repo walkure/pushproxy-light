@@ -1,29 +1,23 @@
 package converter
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"sort"
-	"strconv"
 	"strings"
-	"time"
 )
 
 type payloadJsonItem struct {
-	Type     string     `json:"type"`
-	Help     string     `json:"help"`
-	ExpireAt expireTime `json:"expireAt"`
-	Metrics  []struct {
+	Type    string `json:"type"`
+	Help    string `json:"help"`
+	Metrics []struct {
 		Value     string            `json:"value"`
 		Timestamp string            `json:"timestamp"`
 		Labels    map[string]string `json:"labels"`
 	} `json:"metrics"`
 }
-
-type expireTime time.Time
 
 type PayloadJson map[string]payloadJsonItem
 
@@ -100,26 +94,4 @@ func convertLabels(labels map[string]string) string {
 	}
 
 	return strings.Join(elems, ",")
-}
-
-func (t expireTime) String() string {
-	return time.Time(t).Format(time.RFC3339)
-}
-
-func (t *expireTime) UnmarshalJSON(buf []byte) error {
-	s := bytes.Trim(buf, `"`)
-	text := string(s)
-
-	if epoch, err := strconv.ParseInt(text, 10, 64); err == nil {
-		epochTime := time.Unix(epoch, 0)
-		*t = expireTime(epochTime)
-		return nil
-	}
-
-	tm, err := time.Parse(time.RFC3339, text)
-	if err == nil {
-		*t = expireTime(tm)
-		return nil
-	}
-	return err
 }
