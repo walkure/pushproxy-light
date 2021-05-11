@@ -2,7 +2,7 @@
 
 A primitive proxy implementation to transverse NAT for [Prometheus](https://prometheus.io/) like [PushProx](https://github.com/prometheus-community/PushProx) and [Pushgateway](https://github.com/prometheus/pushgateway).
 
-# Difference between PushProx / Pushgateway
+# Difference from PushProx / Pushgateway
 
 ## PushProx
  - Push metrics from client exporting program directly.
