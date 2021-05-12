@@ -85,7 +85,7 @@ func generateSignature(alg byte, shareKey, body string) (string, error) {
 		hashBinary := sha512.Sum512(buf.Bytes())
 		return fmt.Sprintf("%x", hashBinary), nil
 	default:
-		return "", fmt.Errorf("Alg type=%c unknown", alg)
+		return "", fmt.Errorf("alg type=%c unknown", alg)
 	}
 }
 
@@ -101,14 +101,14 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 		case "application/json":
 			signature = r.Header.Get("X-Signature")
 			if signature == "" {
-				e = errors.New("Signature not found")
+				e = errors.New("signature not found")
 				return
 			}
 
 			var sb strings.Builder
 			if _, err := io.Copy(&sb, r.Body); err != nil {
 				// r.Body does not requires Close (see https://golang.org/pkg/net/http/#Request )
-				e = fmt.Errorf("Retrieve body error: %w", err)
+				e = fmt.Errorf("retrieve body error: %w", err)
 				return
 			}
 			body = sb.String()
@@ -122,16 +122,16 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 			body = r.PostForm.Get("body")
 		}
 	default:
-		e = fmt.Errorf("Method[%s] not allowed", http.MethodPost)
+		e = fmt.Errorf("method[%s] not allowed", http.MethodPost)
 		return
 	}
 	if signature == "" {
-		e = errors.New("Signature not found")
+		e = errors.New("signature not found")
 		return
 	}
 
 	if body == "" {
-		e = errors.New("Body not found")
+		e = errors.New("body not found")
 		return
 	}
 	return
