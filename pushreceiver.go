@@ -97,7 +97,6 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 		body = r.URL.Query().Get("body")
 	case http.MethodPost:
 		switch r.Header.Get("Content-Type") {
-
 		case "application/json":
 			signature = r.Header.Get("X-Signature")
 			if signature == "" {
@@ -120,6 +119,9 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 			}
 			signature = r.PostForm.Get("signature")
 			body = r.PostForm.Get("body")
+		default:
+			e = fmt.Errorf("invalid Content-Type:[%s]", r.Header.Get("Content-Type"))
+			return
 		}
 	default:
 		e = fmt.Errorf("method[%s] not allowed", http.MethodPost)
