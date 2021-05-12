@@ -14,6 +14,7 @@ var preSharedKey = flag.String("preSharedKey", "", "Metrics sharing key")
 var metricsLifetime = flag.Int("metricsLifetime", 5, "Metrics TTL in minutes")
 var httpListener = flag.String("httpListener", ":8080", "HTTP Proxy/PushReceiver Listener Address")
 var proxyMetricsPath = flag.String("proxyMetricsPath", "/metrics", "Path of Metrics URI")
+var pushURIPrefix = flag.String("pushURIPrefix", "", "Metrics retrieve URI path prefix")
 
 var storage *cache.Cache
 
@@ -30,6 +31,10 @@ func main() {
 	storage = cache.New(cacheLifetime, cacheLifetime*3)
 
 	router := mux.NewRouter().StrictSlash(true)
+	if *pushURIPrefix != "" {
+		router = router.PathPrefix(*pushURIPrefix).Subrouter()
+	}
+
 	router.HandleFunc("/push/{host}", pushHandler)
 
 	http.ListenAndServe(*httpListener, &httpHandler{router: router, proxy: http.HandlerFunc(proxyHandler)})

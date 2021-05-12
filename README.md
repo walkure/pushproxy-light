@@ -26,6 +26,8 @@ I tried to use PushProx to monitor a Raspberry Pi Model B that was doing environ
   - Listening Address/Port
 - `--proxyMetricsPath` default=`/metrics`
   - Path URI of Metrics where Prometheus scapes.
+- `--pushURIPrefix`
+  - Path Prefix of retrieving metrics URI(e.g. behind reverse proxy)
 
 # Push Protocol
 PushProx-light accepts JSON text as metrics data(body).
