@@ -95,16 +95,6 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 	case http.MethodGet:
 		signature = r.URL.Query().Get("signature")
 		body = r.URL.Query().Get("body")
-
-		if signature == "" {
-			e = errors.New("Signature not found")
-			return
-		}
-
-		if body == "" {
-			e = errors.New("Body not found")
-			return
-		}
 	case http.MethodPost:
 		switch r.Header.Get("Content-Type") {
 
@@ -122,10 +112,6 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 				return
 			}
 			body = sb.String()
-			if body == "" {
-				e = errors.New("Body not found")
-				return
-			}
 
 		case "application/x-www-form-urlencoded":
 			if err := r.ParseForm(); err != nil {
@@ -136,7 +122,16 @@ func getBodyAndSignature(r *http.Request) (signature, body string, e error) {
 			body = r.PostForm.Get("body")
 		}
 	default:
-		e = fmt.Errorf("Method[%s] not allowed.", http.MethodPost)
+		e = fmt.Errorf("Method[%s] not allowed", http.MethodPost)
+		return
+	}
+	if signature == "" {
+		e = errors.New("Signature not found")
+		return
+	}
+
+	if body == "" {
+		e = errors.New("Body not found")
 		return
 	}
 	return
