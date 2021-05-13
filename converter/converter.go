@@ -26,7 +26,7 @@ var quotedEscaper = strings.NewReplacer("\\", `\\`, "\n", `\n`, "\"", `\"`)
 func ConvertMetrics(w io.Writer, body string) error {
 	obj, err := decodeBody(body)
 	if err != nil {
-		return fmt.Errorf("Cannot Decode JSON: %w", err)
+		return fmt.Errorf("cannot decode JSON: %w", err)
 	}
 
 	transformMetrics(w, obj)
