@@ -63,13 +63,20 @@ func transformMetrics(w io.Writer, payload *PayloadJson) {
 			fmt.Fprintf(w, "# HELP %s %s\n", name, metrics.Help)
 			fmt.Fprintf(w, "# TYPE %s %s\n", name, metrics.Type)
 			for _, metric := range metrics.Metrics {
-				fmt.Fprintf(w, "%s{", name)
-				fmt.Fprint(w, convertLabels(metric.Labels))
-				fmt.Fprintf(w, "} %s", metric.Value)
-				if metric.Timestamp != "" {
-					fmt.Fprintf(w, " %s", metric.Timestamp)
+
+				if len(metric.Labels) > 0 {
+					fmt.Fprintf(w, "%s{", name)
+					fmt.Fprint(w, convertLabels(metric.Labels))
+					fmt.Fprintf(w, "} %s", metric.Value)
+				} else {
+					fmt.Fprintf(w, "%s %s", name, metric.Value)
 				}
-				fmt.Fprint(w, "\n")
+
+				if metric.Timestamp != "" {
+					fmt.Fprintf(w, " %s\n", metric.Timestamp)
+				} else {
+					fmt.Fprintln(w, "")
+				}
 			}
 		default:
 			log.Printf("Unsupported metrics type:%s Skip!\n", metrics.Type)

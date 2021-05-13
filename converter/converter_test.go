@@ -15,7 +15,7 @@ const testJson = `{"temperature":{"type":"gauge","help":"message",
 
 const promTest = `# HELP humidity message
 # TYPE humidity gauge
-humidity{} 33.4
+humidity 33.4
 humidity{place="outside"} 21.4
 # HELP temperature message
 # TYPE temperature gauge
