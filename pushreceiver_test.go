@@ -53,7 +53,7 @@ func TestGetBodyAndSignatureFORM(t *testing.T) {
 }
 
 func TestGenerateSignatureMD5(t *testing.T) {
-	expect := "cf7afe9ca5a522cdf061d65022e7f297"
+	expect := "51fa79f49ac6d9fcd3af620550f9ddb8"
 	result, err := generateSignature('1', "shareKey", "testBody")
 
 	if err != nil {
@@ -66,7 +66,7 @@ func TestGenerateSignatureMD5(t *testing.T) {
 }
 
 func TestGenerateSignatureSHA256(t *testing.T) {
-	expect := "93afe018bbc231e6ad8e64ab96e16df7780d977e04b681362ab9bbf213801bf5"
+	expect := "f166187fa46c79233a07a54699087f139b3d209bc3090c8a83cc2f42bca3a61e"
 	result, err := generateSignature('5', "shareKey", "testBody")
 
 	if err != nil {
@@ -79,7 +79,7 @@ func TestGenerateSignatureSHA256(t *testing.T) {
 }
 
 func TestGenerateSignatureSHA512(t *testing.T) {
-	expect := "4f7a30f207e42145f42602c68433a544f08f9e28efd0aef45c15bc35bb49e9ec777377dc4b26f7580c731d0f757436db934df28d79e8bb613f4a2b9988752532"
+	expect := "582396bac0f2c5bfbcfe4a95007075281c59d2c526fea5bad385d9a6d102d88258326fc2f55465adac86997f288e5174ff9427215eca1cbe9f41dacd7e1f0f91"
 	result, err := generateSignature('6', "shareKey", "testBody")
 
 	if err != nil {

@@ -71,8 +71,8 @@ func generateSignature(alg byte, shareKey, body string) (string, error) {
 
 	var buf bytes.Buffer
 	buf.Grow(len(shareKey) + len(body))
-	buf.WriteString(shareKey)
 	buf.WriteString(body)
+	buf.WriteString(shareKey)
 
 	switch alg {
 	case '1':

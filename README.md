@@ -72,7 +72,7 @@ Metrics data expressed as JSON.
 
 `alg := '1'(md5),'5'(sha256)','6'(sha512)`
 
-`signature :=  fmt.Sprintf("%c%x",alg, md5/sha256/sha512.Sum(preSharedKey+body))`
+`signature :=  fmt.Sprintf("%c%x",alg, md5/sha256/sha512.Sum(body+preSharedKey))`
 
 # Dependeicies
 - [github.com/gorilla/mux](https://github.com/gorilla/mux)
