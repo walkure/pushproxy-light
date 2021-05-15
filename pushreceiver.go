@@ -11,10 +11,16 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/walkure/pushproxy-light/converter"
 )
+
+type PrometheusData struct {
+	Body        string
+	LastUpdated time.Time
+}
 
 func pushHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -57,13 +63,14 @@ func retrieveData(w http.ResponseWriter, host, signature, body string) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	promData := promDataBuilder.String()
+	data := PrometheusData{Body: promDataBuilder.String(), LastUpdated: time.Now()}
 
-	storage.SetDefault(host, promData)
+	storage.SetDefault(host, &data)
 
 	w.Header().Set("Content-Type", "text/plain; version=0.0.4")
+	w.Header().Set("Last-Modified", data.LastUpdated.Format(time.RFC1123))
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, promData)
+	fmt.Fprint(w, data.Body)
 
 }
 
