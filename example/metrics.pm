@@ -23,14 +23,27 @@ sub add_label {
 	$self;
 }
 
+sub add_timestamp {
+	my ($self,$timestamp) = @_;
+	
+	$self->{'timestamp'} = ''.$timestamp;
+	
+	$self;
+}
+
 sub damn_object {
 	my $self = shift;
 	
+	my $damned = {'value' => $self->{'value'}};
+	
 	if(defined $self->{'labels'}){
-		{'value' => $self->{'value'},'labels' => $self->{'labels'}};
-	}else{
-		{'value' => $self->{'value'}};
+		$damned->{'labels'} = $self->{'labels'};
 	}
+	
+	if(defined $self->{'timestamp'}){
+		$damned->{'timestamp'} = $self->{'timestamp'};
+	}
+	$damned;
 }
 
 package _metric_item;
@@ -50,9 +63,10 @@ sub new {
 
 
 sub add_value {
-	my($self,$value) = @_;
+	my($self,$value,$timestamp) = @_;
 	
 	my $metric = _metric_value->new($value);
+	$metric->add_timestamp($timestamp) if defined $timestamp;
 	push(@{$self->{'metrics'}},$metric);
 	$metric;
 }
